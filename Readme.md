@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Данис Хаертдинов](https://up.htmlacademy.ru/ecmascript/12/user/827987).
-* Наставник: `Неизвестно`.
+* Наставник: [Вячеслав Зайцев](https://up.htmlacademy.ru/ecmascript/12/user/428459).
 
 ---
 
