@@ -8,12 +8,12 @@ import {createFilmsCountTemplate} from "./view/films-count";
 import {createFilmDetailsTemplate} from "./view/film-details";
 import {generateFilms} from "./mock/film";
 
-const films = generateFilms(25);
-
 const FilmsCount = {
-  DEFAULT: 5,
+  DEFAULT: 10,
   EXTRA: 2,
 };
+
+const films = generateFilms(FilmsCount.DEFAULT);
 
 const render = (container, template, place = `beforeend`, count = 1) => {
   for (let i = 0; i < count; i++) {
@@ -35,16 +35,19 @@ render(siteMainElement, createFilmsSectionTemplate());
 const filmsListElement = siteMainElement.querySelector(`.films-list`);
 const filmsWrapperElement = filmsListElement.querySelector(`.films-list__container`);
 
-render(filmsWrapperElement, createFilmTemplate(), `beforeend`, FilmsCount.DEFAULT);
+for (const film of films) {
+  render(filmsWrapperElement, createFilmTemplate(film));
+}
+
 render(filmsListElement, createShowMoreButtonTemplate());
 
 const extraFilmsWrapperElements = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
 
-for (const wrapper of extraFilmsWrapperElements) {
-  render(wrapper, createFilmTemplate(), `beforeend`, FilmsCount.EXTRA);
-}
+// for (const wrapper of extraFilmsWrapperElements) {
+//   render(wrapper, createFilmTemplate(), `beforeend`, FilmsCount.EXTRA);
+// }
 
 const footerStatisticsElement = siteBodyElement.querySelector(`.footer__statistics`);
 
 render(footerStatisticsElement, createFilmsCountTemplate());
-render(siteBodyElement, createFilmDetailsTemplate());
+// render(siteBodyElement, createFilmDetailsTemplate());

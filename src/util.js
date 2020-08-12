@@ -39,11 +39,16 @@ const getRandomLengthArray = function (array) {
   return shuffleArray(array).slice(getRandomInteger(0, array.length - 1));
 };
 
+const cutText = (text, from, to) => {
+  return text.slice(from, to);
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
   shuffleArray,
   generateRandomText,
   getRandomDate,
-  getRandomLengthArray
+  getRandomLengthArray,
+  cutText,
 };
