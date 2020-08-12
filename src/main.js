@@ -6,6 +6,9 @@ import {createFilmTemplate} from "./view/film";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {createFilmsCountTemplate} from "./view/films-count";
 import {createFilmDetailsTemplate} from "./view/film-details";
+import {generateFilms} from "./mock/film";
+
+const films = generateFilms(25);
 
 const FilmsCount = {
   DEFAULT: 5,
