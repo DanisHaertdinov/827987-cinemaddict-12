@@ -1,12 +1,10 @@
-import {cutText} from '../util';
+import {cutText, prettifyDuration} from '../util';
 
 export const createFilmTemplate = (film) => {
 
   const {title, rating, date, duration, genres, poster, description, comments} = film;
 
   const year = date.getFullYear();
-  const hour = Math.floor(duration / 60);
-  const minutes = Math.ceil(duration % 60);
   const shortDescription = (description.length > 140) ? `${cutText(description, 0, 140)}…` : description;
 
   return (
@@ -15,7 +13,7 @@ export const createFilmTemplate = (film) => {
     <p class="film-card__rating">${rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${year}</span>
-      <span class="film-card__duration">${hour}h ${minutes}m</span>
+      <span class="film-card__duration">${prettifyDuration(duration)}</span>
       <span class="film-card__genre">${genres[0]}</span>
     </p>
     <img src="./images/posters/${poster}" alt="" class="film-card__poster">

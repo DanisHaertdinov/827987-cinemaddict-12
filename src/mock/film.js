@@ -52,8 +52,8 @@ const generateFilm = () => {
     duration: getRandomInteger(minDuration, maxDuration),
     genres: getRandomLengthArray(GENRES),
     director: getRandomArrayElement(NAMES),
-    actors: getRandomLengthArray(NAMES),
-    writers: getRandomLengthArray(NAMES),
+    actors: getRandomLengthArray(NAMES).join(`, `),
+    writers: getRandomLengthArray(NAMES).join(`, `),
     country: getRandomArrayElement(COUNTRIES),
     comments: generateComments(commentsCount),
   };

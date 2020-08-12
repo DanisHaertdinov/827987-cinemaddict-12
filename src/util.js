@@ -43,6 +43,13 @@ const cutText = (text, from, to) => {
   return text.slice(from, to);
 };
 
+const prettifyDuration = (duration) => {
+  const hour = Math.floor(duration / 60);
+  const minutes = Math.ceil(duration % 60);
+
+  return `${hour === 0 ? `` : `${hour}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
@@ -51,4 +58,5 @@ export {
   getRandomDate,
   getRandomLengthArray,
   cutText,
+  prettifyDuration,
 };

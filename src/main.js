@@ -50,4 +50,4 @@ const extraFilmsWrapperElements = siteMainElement.querySelectorAll(`.films-list-
 const footerStatisticsElement = siteBodyElement.querySelector(`.footer__statistics`);
 
 render(footerStatisticsElement, createFilmsCountTemplate());
-// render(siteBodyElement, createFilmDetailsTemplate());
+render(siteBodyElement, createFilmDetailsTemplate(films[0]));
