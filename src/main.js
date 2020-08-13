@@ -89,4 +89,4 @@ for (const wrapper of extraFilmsWrapperElements) {
 const footerStatisticsElement = siteBodyElement.querySelector(`.footer__statistics`);
 
 render(footerStatisticsElement, createFilmsCountTemplate(films.length));
-// render(siteBodyElement, createFilmDetailsTemplate(films[0]));
+render(siteBodyElement, createFilmDetailsTemplate(films[0]));
