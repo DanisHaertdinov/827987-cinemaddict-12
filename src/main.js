@@ -7,6 +7,8 @@ import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {createFilmsCountTemplate} from "./view/films-count";
 import {createFilmDetailsTemplate} from "./view/film-details";
 import {generateFilms} from "./mock/film";
+import {generateFilter} from "./mock/filter";
+import {generateUserStats} from "./mock/user";
 
 const FilmsCount = {
   DEFAULT: 22,
@@ -15,7 +17,9 @@ const FilmsCount = {
 };
 
 const films = generateFilms(FilmsCount.DEFAULT);
-console.log(films)
+const filters = generateFilter(films);
+const userStats = generateUserStats(filters);
+
 const topRatedFilms = films.slice().sort((a, b) => {
   return b.rating - a.rating;
 }).slice(0, FilmsCount.EXTRA);
@@ -32,11 +36,11 @@ const render = (container, template, place = `beforeend`) => {
 const siteBodyElement = document.querySelector(`body`);
 const siteHeaderElement = siteBodyElement.querySelector(`.header`);
 
-render(siteHeaderElement, createUserRateTemplate());
+render(siteHeaderElement, createUserRateTemplate(userStats.rate));
 
 const siteMainElement = siteBodyElement.querySelector(`.main`);
 
-render(siteMainElement, createMenuTemplate());
+render(siteMainElement, createMenuTemplate(filters));
 render(siteMainElement, createSortTemplate());
 render(siteMainElement, createFilmsSectionTemplate());
 

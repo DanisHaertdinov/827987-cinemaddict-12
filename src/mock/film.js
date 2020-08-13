@@ -56,6 +56,9 @@ const generateFilm = () => {
     writers: getRandomLengthArray(NAMES).join(`, `),
     country: getRandomArrayElement(COUNTRIES),
     comments: generateComments(commentsCount),
+    isInWatchList: Boolean(getRandomInteger()),
+    isWatched: Boolean(getRandomInteger()),
+    isFavorite: Boolean(getRandomInteger()),
   };
 };
 

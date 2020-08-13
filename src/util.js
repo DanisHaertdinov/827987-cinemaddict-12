@@ -50,6 +50,14 @@ const prettifyDuration = (duration) => {
   return `${hour === 0 ? `` : `${hour}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
 };
 
+const filterFilms = (films, criteria) => {
+  return films.filter((film) => film[criteria]);
+};
+
+const capitalize = (s) => {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
@@ -59,4 +67,6 @@ export {
   getRandomLengthArray,
   cutText,
   prettifyDuration,
+  filterFilms,
+  capitalize
 };
