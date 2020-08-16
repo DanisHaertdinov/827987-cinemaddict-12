@@ -21,4 +21,8 @@ const RenderPosition = {
   BEFOREEND: `beforeend`
 };
 
-export {TITLES, POSTERS, LOREUM, GENRES, NAMES, COUNTRIES, EMOJIS, RenderPosition};
+const Keys = {
+  ESC: `Escape`
+};
+
+export {TITLES, POSTERS, LOREUM, GENRES, NAMES, COUNTRIES, EMOJIS, RenderPosition, Keys};
