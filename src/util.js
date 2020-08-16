@@ -54,6 +54,13 @@ const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
@@ -63,5 +70,6 @@ export {
   getRandomLengthArray,
   prettifyDuration,
   filterByProperty,
-  capitalize
+  capitalize,
+  createElement,
 };

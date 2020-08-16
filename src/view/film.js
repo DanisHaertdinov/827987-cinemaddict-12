@@ -1,6 +1,6 @@
-import {prettifyDuration} from '../util';
+import {prettifyDuration, createElement} from '../util';
 
-export const createFilmTemplate = (film) => {
+const createFilmTemplate = (film) => {
   const SHORT_DESCRIPTION_MAX_LENGTH = 140;
 
   const {title, rating, date, duration, genres, poster, description, comments} = film;
@@ -32,3 +32,26 @@ export const createFilmTemplate = (film) => {
   </article>`
   );
 };
+
+export default class Film {
+  constructor(film) {
+    this._element = null;
+    this._film = film;
+  }
+
+  getTemplate() {
+    return createFilmTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

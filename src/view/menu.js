@@ -1,4 +1,4 @@
-import {capitalize} from '../util';
+import {capitalize, createElement} from '../util';
 
 const createMenuFiltersTemplate = (filters) => {
   return filters.map((filter) => {
@@ -14,7 +14,7 @@ const createMenuFiltersTemplate = (filters) => {
   }).join(``);
 };
 
-export const createMenuTemplate = (filters) => {
+const createMenuTemplate = (filters) => {
   return (
     `<nav class="main-navigation">
     <div class="main-navigation__items">
@@ -25,3 +25,26 @@ export const createMenuTemplate = (filters) => {
   </nav>`
   );
 };
+
+export default class Menu {
+  constructor(filters) {
+    this._element = null;
+    this._filters = filters;
+  }
+
+  getTemplate() {
+    return createMenuTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
