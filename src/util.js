@@ -25,8 +25,8 @@ const shuffleArray = function (array) {
 };
 
 const generateRandomText = (maxLength) => {
-  const randomIndex = getRandomInteger(1, maxLength);
-  return shuffleArray(LOREUM).slice(0, randomIndex).join(``);
+  const randomLength = getRandomInteger(1, maxLength);
+  return shuffleArray(LOREUM).slice(0, randomLength).join(``);
 };
 
 const getRandomDate = () => {
@@ -39,18 +39,14 @@ const getRandomLengthArray = function (array) {
   return shuffleArray(array).slice(getRandomInteger(0, array.length - 1));
 };
 
-const cutText = (text, from, to) => {
-  return text.slice(from, to);
-};
-
 const prettifyDuration = (duration) => {
-  const hour = Math.floor(duration / 60);
+  const hours = Math.floor(duration / 60);
   const minutes = Math.ceil(duration % 60);
 
-  return `${hour === 0 ? `` : `${hour}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
+  return `${hours === 0 ? `` : `${hours}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
 };
 
-const filterFilms = (films, criteria) => {
+const filterByProperty = (films, criteria) => {
   return films.filter((film) => film[criteria]);
 };
 
@@ -65,8 +61,7 @@ export {
   generateRandomText,
   getRandomDate,
   getRandomLengthArray,
-  cutText,
   prettifyDuration,
-  filterFilms,
+  filterByProperty,
   capitalize
 };

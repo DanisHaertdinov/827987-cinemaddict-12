@@ -7,7 +7,7 @@ import {createShowMoreButtonTemplate} from "./view/show-more-button";
 import {createFilmsCountTemplate} from "./view/films-count";
 import {createFilmDetailsTemplate} from "./view/film-details";
 import {generateFilms} from "./mock/film";
-import {generateFilter} from "./mock/filter";
+import {generateFilters} from "./mock/filter";
 import {generateUserStats} from "./mock/user";
 
 const FilmsCount = {
@@ -17,7 +17,7 @@ const FilmsCount = {
 };
 
 const films = generateFilms(FilmsCount.DEFAULT);
-const filters = generateFilter(films);
+const filters = generateFilters(films);
 const userStats = generateUserStats(filters);
 
 const topRatedFilms = films.slice().sort((a, b) => {
@@ -47,7 +47,7 @@ render(siteMainElement, createFilmsSectionTemplate());
 const filmsListElement = siteMainElement.querySelector(`.films-list`);
 const filmsWrapperElement = filmsListElement.querySelector(`.films-list__container`);
 
-films.slice(1, FilmsCount.PER_STEP + 1).forEach((film) => {
+films.slice(0, FilmsCount.PER_STEP).forEach((film) => {
   render(filmsWrapperElement, createFilmTemplate(film));
 });
 
@@ -89,4 +89,4 @@ for (const wrapper of extraFilmsWrapperElements) {
 const footerStatisticsElement = siteBodyElement.querySelector(`.footer__statistics`);
 
 render(footerStatisticsElement, createFilmsCountTemplate(films.length));
-render(siteBodyElement, createFilmDetailsTemplate(films[0]));
+// render(siteBodyElement, createFilmDetailsTemplate(films[0]));

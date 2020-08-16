@@ -1,11 +1,16 @@
-import {cutText, prettifyDuration} from '../util';
+import {prettifyDuration} from '../util';
 
 export const createFilmTemplate = (film) => {
+  const SHORT_DESCRIPTION_MAX_LENGTH = 140;
 
   const {title, rating, date, duration, genres, poster, description, comments} = film;
 
   const year = date.getFullYear();
-  const shortDescription = (description.length > 140) ? `${cutText(description, 0, 140)}…` : description;
+  const shortDescription = (description.length > SHORT_DESCRIPTION_MAX_LENGTH)
+    ?
+    `${description.slice(0, SHORT_DESCRIPTION_MAX_LENGTH)}…`
+    :
+    description;
 
   return (
     `<article class="film-card">
