@@ -1,4 +1,4 @@
-import {LOREUM} from './const.js';
+import {LOREUM, RenderPosition} from './const.js';
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -61,6 +61,17 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
+const render = (container, element, place=`beforeend`) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
@@ -72,4 +83,5 @@ export {
   filterByProperty,
   capitalize,
   createElement,
+  render,
 };
