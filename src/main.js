@@ -3,6 +3,7 @@ import Menu from "./view/menu";
 import Sort from "./view/sort";
 import FilmsSection from "./view/films-section";
 import Film from "./view/film";
+import NoFilms from "./view/no-films";
 import ShowMoreButton from "./view/show-more-button";
 import FilmsCount from "./view/films-count";
 import FilmDetails from "./view/film-details";
@@ -65,11 +66,21 @@ const renderFilm = (filmsWrapperElement, film) => {
 
 const renderFilmsSection = (sectionContainer, sectionFilms) => {
   const filmsSectionComponent = new FilmsSection();
+  const filmsSectionElement = filmsSectionComponent.getElement();
+
+  const noFilmsComponent = new NoFilms();
+
+  render(sectionContainer, filmsSectionElement);
+
+  if (sectionFilms.length === 0) {
+    render(filmsSectionElement, noFilmsComponent.getElement());
+    return;
+  }
+
   const filmsComponent = new Films();
   const topRatedFilmsComponent = new TopRatedFilms();
   const mostCommentedFilmsComponent = new MostCommentedFilms();
 
-  const filmsSectionElement = filmsSectionComponent.getElement();
   const filmsElement = filmsComponent.getElement();
   const filmsWrapperElement = filmsElement.querySelector(`.films-list__container`);
 
@@ -87,7 +98,6 @@ const renderFilmsSection = (sectionContainer, sectionFilms) => {
     return b.comments.length - a.comments.length;
   }).slice(0, FilmsNumber.EXTRA);
 
-  render(sectionContainer, filmsSectionElement);
   render(filmsSectionElement, filmsElement);
 
   sectionFilms.slice(0, FilmsNumber.PER_STEP).forEach((film) => {
