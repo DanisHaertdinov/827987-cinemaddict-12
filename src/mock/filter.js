@@ -1,4 +1,4 @@
-import {filterFilms} from '../util';
+import {filterByProperty} from '../util';
 
 const filmsFilterMap = {
   watchlist: `isInWatchList`,
@@ -6,13 +6,13 @@ const filmsFilterMap = {
   favorites: `isFavorite`
 };
 
-const generateFilter = (films) => {
+const generateFilters = (films) => {
   return Object.entries(filmsFilterMap).map(([filterName, criteria]) => {
     return {
       name: filterName,
-      filteredFilms: filterFilms(films, criteria),
+      filteredFilms: filterByProperty(films, criteria),
     };
   });
 };
 
-export {generateFilter};
+export {generateFilters};

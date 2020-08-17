@@ -1,4 +1,4 @@
-import {prettifyDuration} from "../util";
+import {prettifyDuration, createElement} from "../util";
 
 const createFilmDetailsGenresTemplate = (genres) => {
   return genres.map((genre) => {
@@ -32,7 +32,7 @@ const createFilmDetailsCommentsTemplate = (comments) => {
   }).join(``);
 };
 
-export const createFilmDetailsTemplate = (film) => {
+const createFilmDetailsTemplate = (film) => {
   const {title, description, poster, ageRating, rating, director, writers, actors, date, duration, country, genres, comments} = film;
 
   const releaseDay = date.getDate();
@@ -160,3 +160,26 @@ export const createFilmDetailsTemplate = (film) => {
 </section>`
   );
 };
+
+export default class FilmDetails {
+  constructor(film) {
+    this._element = null;
+    this._film = film;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,4 +1,4 @@
-import {LOREUM} from './const.js';
+import {LOREUM, RenderPosition} from './const.js';
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -25,8 +25,8 @@ const shuffleArray = function (array) {
 };
 
 const generateRandomText = (maxLength) => {
-  const randomIndex = getRandomInteger(1, maxLength);
-  return shuffleArray(LOREUM).slice(0, randomIndex).join(``);
+  const randomLength = getRandomInteger(1, maxLength);
+  return shuffleArray(LOREUM).slice(0, randomLength).join(``);
 };
 
 const getRandomDate = () => {
@@ -39,23 +39,37 @@ const getRandomLengthArray = function (array) {
   return shuffleArray(array).slice(getRandomInteger(0, array.length - 1));
 };
 
-const cutText = (text, from, to) => {
-  return text.slice(from, to);
-};
-
 const prettifyDuration = (duration) => {
-  const hour = Math.floor(duration / 60);
+  const hours = Math.floor(duration / 60);
   const minutes = Math.ceil(duration % 60);
 
-  return `${hour === 0 ? `` : `${hour}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
+  return `${hours === 0 ? `` : `${hours}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
 };
 
-const filterFilms = (films, criteria) => {
+const filterByProperty = (films, criteria) => {
   return films.filter((film) => film[criteria]);
 };
 
 const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+const render = (container, element, place = `beforeend`) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 export {
@@ -65,8 +79,9 @@ export {
   generateRandomText,
   getRandomDate,
   getRandomLengthArray,
-  cutText,
   prettifyDuration,
-  filterFilms,
-  capitalize
+  filterByProperty,
+  capitalize,
+  createElement,
+  render,
 };

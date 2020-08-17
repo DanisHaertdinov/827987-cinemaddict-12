@@ -16,4 +16,13 @@ const GENRES = [`Cartoon`, `Comedy`, `Drama`, `Western`, `Musical`];
 const NAMES = [`Brenda Chapman`, `Barry Johnson`, `Andy Gaskill`, `Kevin Harkey`, `Tom Sito`, `Rick Maki`, `Burny Mattinson`, `Lorna Cook`, `Whoopi Goldberg`, `Cheech Marin`, `Rowan Atkinson`];
 const COUNTRIES = [`Russia`, `USA`, `France`, `Canada`];
 const EMOJIS = [`smile`, `sleeping`, `puke`, `angry`];
-export {TITLES, POSTERS, LOREUM, GENRES, NAMES, COUNTRIES, EMOJIS};
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+const Keys = {
+  ESC: `Escape`
+};
+
+export {TITLES, POSTERS, LOREUM, GENRES, NAMES, COUNTRIES, EMOJIS, RenderPosition, Keys};
