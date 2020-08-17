@@ -7,7 +7,7 @@ const createFilmsCountTemplate = (count) => {
 };
 
 export default class FilmsCount {
-  constructor(count) {
+  constructor(count = 0) {
     this._element = null;
     this._count = count;
   }
