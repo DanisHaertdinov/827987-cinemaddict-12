@@ -1,4 +1,5 @@
 import {RenderPosition} from '../const.js';
+import Abstract from '../view/abstract';
 
 const createElement = (template) => {
   const newElement = document.createElement(`div`);
@@ -8,6 +9,14 @@ const createElement = (template) => {
 };
 
 const render = (container, element, place = `beforeend`) => {
+  if (container instanceof Abstract) {
+    container = container.getElement();
+  }
+
+  if (element instanceof Abstract) {
+    element = element.getElement();
+  }
+
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
