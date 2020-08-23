@@ -46,8 +46,8 @@ const prettifyDuration = (duration) => {
   return `${hours === 0 ? `` : `${hours}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
 };
 
-const filterByProperty = (films, criteria) => {
-  return films.filter((film) => film[criteria]);
+const filterByProperty = (items, criteria) => {
+  return items.filter((item) => item[criteria]);
 };
 
 const capitalize = (s) => {

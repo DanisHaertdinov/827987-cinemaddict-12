@@ -27,7 +27,17 @@ const render = (container, element, place = `beforeend`) => {
   }
 };
 
+const remove = (component) => {
+  if (!(component instanceof Abstract)) {
+    throw new Error(`Can remove only components`);
+  }
+
+  component.getElement().remove();
+  component.removeElement();
+};
+
 export {
   createElement,
   render,
+  remove
 };
