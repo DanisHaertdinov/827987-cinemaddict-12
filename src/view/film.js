@@ -1,4 +1,5 @@
-import {prettifyDuration, createElement} from '../util';
+import {prettifyDuration} from '../util';
+import AbstractView from "./abstract.js";
 
 const createFilmTemplate = (film) => {
   const SHORT_DESCRIPTION_MAX_LENGTH = 140;
@@ -33,25 +34,14 @@ const createFilmTemplate = (film) => {
   );
 };
 
-export default class Film {
+export default class Film extends AbstractView {
   constructor(film) {
-    this._element = null;
+    super();
+
     this._film = film;
   }
 
   getTemplate() {
     return createFilmTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

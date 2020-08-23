@@ -1,4 +1,4 @@
-import {createElement} from "../util";
+import AbstractView from "./abstract.js";
 
 const createUserRateTemplate = (rate) => {
   return (
@@ -9,25 +9,14 @@ const createUserRateTemplate = (rate) => {
   );
 };
 
-export default class UserRate {
+export default class UserRate extends AbstractView {
   constructor(rate) {
-    this._element = null;
+    super();
+
     this._rate = rate;
   }
 
   getTemplate() {
     return createUserRateTemplate(this._rate);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,5 @@
-import {prettifyDuration, createElement} from "../util";
+import {prettifyDuration} from "../util";
+import AbstractView from "./abstract.js";
 
 const createFilmDetailsGenresTemplate = (genres) => {
   return genres.map((genre) => {
@@ -161,25 +162,13 @@ const createFilmDetailsTemplate = (film) => {
   );
 };
 
-export default class FilmDetails {
+export default class FilmDetails extends AbstractView {
   constructor(film) {
-    this._element = null;
+    super();
     this._film = film;
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
