@@ -1,4 +1,4 @@
-import {capitalize} from '../util';
+import {capitalize} from '../util/common';
 import AbstractView from "./abstract.js";
 
 const createMenuFiltersTemplate = (filters) => {

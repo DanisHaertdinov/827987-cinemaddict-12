@@ -1,4 +1,4 @@
-import {getRandomArrayElement, generateRandomText, getRandomInteger, getRandomDate, getRandomLengthArray} from '../util.js';
+import {getRandomArrayElement, generateRandomText, getRandomInteger, getRandomDate, getRandomLengthArray} from '../util/common';
 import {TITLES, POSTERS, GENRES, NAMES, COUNTRIES, EMOJIS} from '../const';
 
 const DESCRIPTION_MAX_LENGTH = 5;

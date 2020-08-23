@@ -13,7 +13,7 @@ import MostCommentedFilms from "./view/most-commented-films";
 import {generateFilms} from "./mock/film";
 import {generateFilters} from "./mock/filter";
 import {generateUserStats} from "./mock/user";
-import {render} from './util';
+import {render} from './util/render';
 import {Keys} from "./const";
 
 const FilmsNumber = {

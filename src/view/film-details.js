@@ -1,4 +1,4 @@
-import {prettifyDuration} from "../util";
+import {prettifyDuration} from "../util/common";
 import AbstractView from "./abstract.js";
 
 const createFilmDetailsGenresTemplate = (genres) => {
