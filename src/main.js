@@ -32,12 +32,6 @@ const renderFilm = (filmsWrapperElement, film) => {
 
   const filmDetailsComponent = new FilmDetails(film);
 
-  const filmDetailsClose = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
-
-  const filmDetailsCloseClickHandler = () => {
-    hideFilmDetails();
-  };
-
   const filmDetailsEscPressHandler = (evt) => {
     if (evt.key === Keys.ESC) {
       hideFilmDetails();
@@ -45,21 +39,19 @@ const renderFilm = (filmsWrapperElement, film) => {
   };
 
   const showFilmDetails = () => {
-    render(siteBodyElement, filmDetailsComponent.getElement());
-    filmDetailsClose.addEventListener(`click`, filmDetailsCloseClickHandler);
+    document.body.appendChild(filmDetailsComponent.getElement());
     document.addEventListener(`keydown`, filmDetailsEscPressHandler);
   };
 
   const hideFilmDetails = () => {
-    filmDetailsClose.removeEventListener(`click`, filmDetailsCloseClickHandler);
+    document.body.removeChild(filmDetailsComponent.getElement());
     document.removeEventListener(`keydown`, filmDetailsEscPressHandler);
-    filmDetailsComponent.getElement().remove();
   };
 
-  filmElement.querySelector(`.film-card__title`).addEventListener(`click`, showFilmDetails);
-  filmElement.querySelector(`.film-card__poster`).addEventListener(`click`, showFilmDetails);
-  filmElement.querySelector(`.film-card__comments`).addEventListener(`click`, showFilmDetails);
-
+  filmComponent.setPosterClickHandler(showFilmDetails);
+  filmComponent.setTitleClickHandler(showFilmDetails);
+  filmComponent.setCommentsClickHandler(showFilmDetails);
+  filmDetailsComponent.setCloseBtnClickHandler(hideFilmDetails);
 
   render(filmsWrapperElement, filmElement);
 };
@@ -112,8 +104,7 @@ const renderFilmsSection = (sectionContainer, sectionFilms) => {
     render(filmsElement, showMoreButtonComponent.getElement());
 
 
-    showMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
-      evt.preventDefault();
+    showMoreButtonComponent.setClickHandler(() => {
       sectionFilms.slice(renderedFilmsCount, renderedFilmsCount + FilmsNumber.PER_STEP).forEach((film) => {
         renderFilm(filmsWrapperElement, film);
       });
