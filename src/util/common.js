@@ -1,4 +1,4 @@
-import {LOREUM, RenderPosition} from './const.js';
+import {LOREUM} from '../const.js';
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -46,31 +46,14 @@ const prettifyDuration = (duration) => {
   return `${hours === 0 ? `` : `${hours}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
 };
 
-const filterByProperty = (films, criteria) => {
-  return films.filter((film) => film[criteria]);
+const filterByProperty = (items, criteria) => {
+  return items.filter((item) => item[criteria]);
 };
 
 const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
-
-const render = (container, element, place = `beforeend`) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
 
 export {
   getRandomInteger,
@@ -82,6 +65,4 @@ export {
   prettifyDuration,
   filterByProperty,
   capitalize,
-  createElement,
-  render,
 };

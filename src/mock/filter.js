@@ -1,4 +1,4 @@
-import {filterByProperty} from '../util';
+import {filterByProperty} from '../util/common';
 
 const filmsFilterMap = {
   watchlist: `isInWatchList`,
