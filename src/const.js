@@ -25,4 +25,20 @@ const Keys = {
   ESC: `Escape`
 };
 
-export {TITLES, POSTERS, LOREUM, GENRES, NAMES, COUNTRIES, EMOJIS, RenderPosition, Keys};
+const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`,
+};
+
+export {TITLES,
+  POSTERS,
+  LOREUM,
+  GENRES,
+  NAMES,
+  COUNTRIES,
+  EMOJIS,
+  RenderPosition,
+  Keys,
+  SortType,
+};
