@@ -39,6 +39,13 @@ export default class FilmsSection {
 
     this._showMoreButtonClickHandler = this._showMoreButtonClickHandler.bind(this);
     this._sortBtnClickHandler = this._sortBtnClickHandler.bind(this);
+    this._detailsDisplayChange = this._detailsDisplayChange.bind(this);
+  }
+
+  _detailsDisplayChange() {
+    [this._filmPresenter, this._topRatedPresenter, this._mostCommentedPresenter].forEach((presenter) => {
+      Object.values(presenter).forEach((film) => film.resetView());
+    });
   }
 
   _showMoreButtonClickHandler() {
@@ -59,7 +66,7 @@ export default class FilmsSection {
   }
 
   _renderFilm(container, film, presenter = this._filmPresenter) {
-    const filmPresenter = new FilmPresenter(container);
+    const filmPresenter = new FilmPresenter(container, this._detailsDisplayChange);
     presenter[film.id] = filmPresenter;
     filmPresenter.init(film);
   }
@@ -130,9 +137,7 @@ export default class FilmsSection {
   }
 
   _clearFilmsList() {
-    console.log(this._filmPresenter)
     Object.values(this._filmPresenter).forEach((film) => {
-      
       film.destroy();
     });
 

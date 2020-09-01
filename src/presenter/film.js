@@ -4,8 +4,11 @@ import {render, remove} from '../util/render';
 import {Keys} from '../const';
 
 export default class Film {
-  constructor(filmContainer) {
+  constructor(filmContainer, changeDetailsDisplay) {
     this._filmContainer = filmContainer;
+
+    this._changeDetailsDisplay = changeDetailsDisplay;
+    this._isDetailsShown = false;
 
     this._filmComponent = null;
     this._filmDetailsComponent = null;
@@ -44,11 +47,20 @@ export default class Film {
   _hideFilmDetails() {
     document.body.removeChild(this._filmDetailsComponent.getElement());
     document.removeEventListener(`keydown`, this._filmDetailsEscPressHandler);
+    this._isDetailsShown = false;
   }
 
   _showFilmDetails() {
+    this._changeDetailsDisplay();
     document.body.appendChild(this._filmDetailsComponent.getElement());
     document.addEventListener(`keydown`, this._filmDetailsEscPressHandler);
+    this._isDetailsShown = true;
+  }
+
+  resetView() {
+    if (this._isDetailsShown) {
+      this._hideFilmDetails();
+    }
   }
 
   destroy() {
