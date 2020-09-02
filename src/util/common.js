@@ -50,10 +50,23 @@ const filterByProperty = (items, criteria) => {
   return items.filter((item) => item[criteria]);
 };
 
-const capitalize = (s) => {
-  return s.charAt(0).toUpperCase() + s.slice(1);
+const capitalize = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1)
+  ];
+};
 
 export {
   getRandomInteger,
@@ -65,4 +78,5 @@ export {
   prettifyDuration,
   filterByProperty,
   capitalize,
+  updateItem,
 };

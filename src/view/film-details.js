@@ -34,7 +34,7 @@ const createFilmDetailsCommentsTemplate = (comments) => {
 };
 
 const createFilmDetailsTemplate = (film) => {
-  const {title, description, poster, ageRating, rating, director, writers, actors, date, duration, country, genres, comments} = film;
+  const {title, description, poster, ageRating, rating, director, writers, actors, date, duration, country, genres, comments, isInWatchList, isWatched, isFavorite} = film;
 
   const releaseDay = date.getDate();
   const releaseMonth = date.toLocaleString(`en-US`, {month: `long`});
@@ -107,13 +107,13 @@ const createFilmDetailsTemplate = (film) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isInWatchList ? `checked` : ``}>
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
@@ -168,6 +168,9 @@ export default class FilmDetails extends AbstractView {
 
     this._film = film;
     this._closeBtnClickHandler = this._closeBtnClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._watchedClickHandler = this._watchedClickHandler.bind(this);
+    this._watchListClickHandler = this._watchListClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -177,6 +180,36 @@ export default class FilmDetails extends AbstractView {
   _closeBtnClickHandler(evt) {
     evt.preventDefault();
     this._callback._closeBtnClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  _watchedClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchedClick();
+  }
+
+  _watchListClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchListClick();
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  setWatchListClickHandler(callback) {
+    this._callback.watchListClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, this._watchListClickHandler);
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, this._watchedClickHandler);
   }
 
   setCloseBtnClickHandler(callback) {

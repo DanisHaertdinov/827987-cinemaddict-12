@@ -8,6 +8,7 @@ import SortView from "../view/sort";
 import FilmPresenter from "./film";
 import {render, remove} from "../util/render";
 import {SortType} from "../const";
+import {updateItem} from "../util/common";
 
 const FilmsNumber = {
   DEFAULT: 22,
@@ -37,9 +38,24 @@ export default class FilmsSection {
     this._topRatedPresenter = {};
     this._mostCommentedPresenter = {};
 
+    this._filmChangeHandler = this._filmChangeHandler.bind(this);
     this._showMoreButtonClickHandler = this._showMoreButtonClickHandler.bind(this);
     this._sortBtnClickHandler = this._sortBtnClickHandler.bind(this);
     this._detailsDisplayChange = this._detailsDisplayChange.bind(this);
+  }
+
+  _filmChangeHandler(updatedFilm) {
+    this._sectionFilms = updateItem(this._sectionFilms, updatedFilm);
+    this._sourcedFilms = updateItem(this._sourcedFilms, updatedFilm);
+    if (this._filmPresenter[updatedFilm.id]) {
+      this._filmPresenter[updatedFilm.id].init(updatedFilm);
+    }
+    if (this._topRatedPresenter[updatedFilm.id]) {
+      this._topRatedPresenter[updatedFilm.id].init(updatedFilm);
+    }
+    if (this._mostCommentedPresenter[updatedFilm.id]) {
+      this._mostCommentedPresenter[updatedFilm.id].init(updatedFilm);
+    }
   }
 
   _detailsDisplayChange() {
@@ -66,13 +82,14 @@ export default class FilmsSection {
   }
 
   _renderFilm(container, film, presenter = this._filmPresenter) {
-    const filmPresenter = new FilmPresenter(container, this._detailsDisplayChange);
+    const filmPresenter = new FilmPresenter(container, this._detailsDisplayChange, this._filmChangeHandler);
     presenter[film.id] = filmPresenter;
     filmPresenter.init(film);
   }
 
   _renderMostCommentedFilmsList() {
-    render(this._filmsSectionComponent, this._mostCommentedFilmsListComponent);
+    this._removePresenterFilms(this._mostCommentedPresenter);
+    this._mostCommentedPresenter = {};
 
     this._sectionFilms
     .slice()
@@ -84,7 +101,8 @@ export default class FilmsSection {
   }
 
   _renderTopRatedFilmsList() {
-    render(this._filmsSectionComponent, this._topRatedFilmsListComponent);
+    this._removePresenterFilms(this._topRatedPresenter);
+    this._topRatedPresenter = {};
 
     this._sectionFilms
     .slice()
@@ -96,6 +114,9 @@ export default class FilmsSection {
   }
 
   _renderFilmsList() {
+    this._removePresenterFilms(this._filmPresenter);
+    this._filmPresenter = {};
+
     this._sectionFilms
     .slice(0, Math.min(this._sectionFilms.length, FilmsNumber.PER_STEP))
     .forEach((film) => this._renderFilm(this._filmsContainer, film));
@@ -136,12 +157,10 @@ export default class FilmsSection {
     }
   }
 
-  _clearFilmsList() {
-    Object.values(this._filmPresenter).forEach((film) => {
+  _removePresenterFilms(presenter) {
+    Object.values(presenter).forEach((film) => {
       film.destroy();
     });
-
-    this._filmPresenter = {};
   }
 
   _sortBtnClickHandler(sortType) {
@@ -150,7 +169,6 @@ export default class FilmsSection {
     }
 
     this._sortFilms(sortType);
-    this._clearFilmsList();
     this._renderFilmsList();
   }
 
@@ -166,6 +184,8 @@ export default class FilmsSection {
     this._renderSort();
     render(this._sectionContainer, this._filmsSectionComponent);
     render(this._filmsSectionComponent, this._filmsListComponent);
+    render(this._filmsSectionComponent, this._mostCommentedFilmsListComponent);
+    render(this._filmsSectionComponent, this._topRatedFilmsListComponent);
     this._renderFilmsSection();
     this._renderTopRatedFilmsList();
     this._renderMostCommentedFilmsList();
