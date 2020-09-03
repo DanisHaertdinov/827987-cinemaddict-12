@@ -52,7 +52,9 @@ export default class Film {
     }
 
     if (this._isDetailsShown) {
+      const scrollPosition = prevFilmDetailsComponent.getElement().scrollTop;
       replace(this._filmDetailsComponent, prevFilmDetailsComponent);
+      this._filmDetailsComponent.getElement().scrollTop = scrollPosition;
     }
 
     remove(prevFilmComponent);
@@ -102,6 +104,7 @@ export default class Film {
   }
 
   _hideFilmDetails() {
+    this._filmDetailsComponent.reset();
     document.body.removeChild(this._filmDetailsComponent.getElement());
     document.removeEventListener(`keydown`, this._filmDetailsEscPressHandler);
     this._isDetailsShown = false;
