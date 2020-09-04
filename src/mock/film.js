@@ -20,6 +20,8 @@ const AgeRating = {
   MAX: 18,
 };
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 const generateComment = () => {
   return {
     text: generateRandomText(COMMENT_MAX_LENGTH),
@@ -43,6 +45,7 @@ const generateFilm = () => {
   const rating = (getRandomInteger(minRating, maxRating) + Math.random()).toFixed(1);
 
   return {
+    id: generateId(),
     title: getRandomArrayElement(TITLES),
     poster: getRandomArrayElement(POSTERS),
     description: generateRandomText(DESCRIPTION_MAX_LENGTH),

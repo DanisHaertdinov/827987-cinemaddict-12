@@ -1,12 +1,12 @@
 import AbstractView from "./abstract.js";
 import {SortType} from "../const.js";
 
-const activeBtnClass = `sort__button--active`;
+const ACTIVE_BUTTON_CLASS = `sort__button--active`;
 
 const createSortTemplate = () => {
   return (
     `<ul class="sort">
-    <li><a href="#" class="sort__button ${activeBtnClass}" data-sort-type="${SortType.DEFAULT}">Sort by default</a></li>
+    <li><a href="#" class="sort__button ${ACTIVE_BUTTON_CLASS}" data-sort-type="${SortType.DEFAULT}">Sort by default</a></li>
     <li><a href="#" class="sort__button" data-sort-type="${SortType.DATE}">Sort by date</a></li>
     <li><a href="#" class="sort__button" data-sort-type="${SortType.RATING}">Sort by rating</a></li>
   </ul>`
@@ -29,8 +29,8 @@ export default class Sort extends AbstractView {
   }
 
   _setActiveBtn(btn) {
-    this.getElement().querySelector(`.${activeBtnClass}`).classList.remove(activeBtnClass);
-    btn.classList.add(activeBtnClass);
+    this.getElement().querySelector(`.${ACTIVE_BUTTON_CLASS}`).classList.remove(ACTIVE_BUTTON_CLASS);
+    btn.classList.add(ACTIVE_BUTTON_CLASS);
   }
 
   setSortBtnClickHandler(callback) {
