@@ -1,4 +1,4 @@
-import {prettifyDuration} from "../util/common";
+import {prettifyDuration, formatDate, humanizeDate} from "../util/common";
 import Smart from "./smart";
 import {EMOJIS} from "../const";
 
@@ -27,12 +27,6 @@ const createFilmDetailsCommentsTemplate = (comments) => {
   return comments.map((comment) => {
     const {text, emoji, author, date} = comment;
 
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate();
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-
     return `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
       <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-angry">
@@ -41,7 +35,7 @@ const createFilmDetailsCommentsTemplate = (comments) => {
       <p class="film-details__comment-text">${text}</p>
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${author}</span>
-        <span class="film-details__comment-day">${year}/${month}/${day} ${hour}:${minute}</span>
+        <span class="film-details__comment-day">${humanizeDate(date)}</span>
         <button class="film-details__comment-delete">Delete</button>
       </p>
     </div>
@@ -71,9 +65,7 @@ const createFilmDetailsTemplate = (film) => {
     userComment,
   } = film;
 
-  const releaseDay = date.getDate();
-  const releaseMonth = date.toLocaleString(`en-US`, {month: `long`});
-  const releaseYear = date.getFullYear();
+  const releaseDate = formatDate(date, `DD MMMM YYYY`);
 
   const genresTitle = (genres.length > 1) ? `Genres` : `Genre`;
 
@@ -118,7 +110,7 @@ const createFilmDetailsTemplate = (film) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${releaseDay} ${releaseMonth} ${releaseYear}</td>
+              <td class="film-details__cell">${releaseDate}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>

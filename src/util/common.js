@@ -1,4 +1,5 @@
 import {LOREUM} from '../const.js';
+import moment from 'moment';
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -40,10 +41,7 @@ const getRandomLengthArray = function (array) {
 };
 
 const prettifyDuration = (duration) => {
-  const hours = Math.floor(duration / 60);
-  const minutes = Math.ceil(duration % 60);
-
-  return `${hours === 0 ? `` : `${hours}h`} ${minutes === 0 ? `` : `${minutes}m`}`;
+  return moment.utc().startOf(`day`).add({minutes: duration}).format(`H[h] mm[m]`);
 };
 
 const filterByProperty = (items, criteria) => {
@@ -68,6 +66,14 @@ const updateItem = (items, update) => {
   ];
 };
 
+const formatDate = (date, format) => {
+  return moment(date).format(format);
+};
+
+const humanizeDate = (date) => {
+  return moment(date).fromNow();
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
@@ -79,4 +85,6 @@ export {
   filterByProperty,
   capitalize,
   updateItem,
+  formatDate,
+  humanizeDate
 };
