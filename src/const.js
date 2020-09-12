@@ -31,6 +31,16 @@ const SortType = {
   RATING: `rating`,
 };
 
+const UserAction = {
+  UPDATE_FILM: `UPDATE_FILM`,
+};
+
+const UpdateType = {
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+
+
 export {TITLES,
   POSTERS,
   LOREUM,
@@ -41,4 +51,7 @@ export {TITLES,
   RenderPosition,
   Keys,
   SortType,
+  UserAction,
+  UpdateType,
 };
+

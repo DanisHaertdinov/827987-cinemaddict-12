@@ -1,12 +1,11 @@
 import FilmView from '../view/film';
 import FilmDetailsView from '../view/film-details';
 import {render, remove, replace} from '../util/render';
-import {Keys} from '../const';
+import {Keys, UserAction, UpdateType} from '../const';
 
 export default class Film {
   constructor(filmContainer, changeDetailsDisplay, changeData) {
     this._filmContainer = filmContainer;
-
     this._changeData = changeData;
     this._changeDetailsDisplay = changeDetailsDisplay;
     this._isDetailsShown = false;
@@ -63,6 +62,8 @@ export default class Film {
 
   _handleFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -75,6 +76,8 @@ export default class Film {
 
   _handleWatchedClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -87,6 +90,8 @@ export default class Film {
 
   _handleWatchListClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,

@@ -2,6 +2,7 @@ import UserRateView from "./view/user-rate";
 import MenuView from "./view/menu";
 import FilmsCountView from "./view/films-count";
 import FilmsSectionPresenter from './presenter/films-section';
+import FilmsModel from "./model/films";
 import {generateFilms} from "./mock/film";
 import {generateFilters} from "./mock/filter";
 import {generateUserStats} from "./mock/user";
@@ -17,6 +18,9 @@ const films = generateFilms(FilmsNumber.DEFAULT);
 const filters = generateFilters(films);
 const userStats = generateUserStats(filters);
 
+const filmsModel = new FilmsModel();
+filmsModel.setFilms(films);
+
 const siteBodyElement = document.querySelector(`body`);
 const siteHeaderElement = siteBodyElement.querySelector(`.header`);
 
@@ -26,8 +30,8 @@ const siteMainElement = siteBodyElement.querySelector(`.main`);
 
 render(siteMainElement, new MenuView(filters).getElement());
 
-const filmsSectionPresenter = new FilmsSectionPresenter(siteMainElement);
-filmsSectionPresenter.init(films);
+const filmsSectionPresenter = new FilmsSectionPresenter(siteMainElement, filmsModel);
+filmsSectionPresenter.init();
 
 const footerStatisticsElement = siteBodyElement.querySelector(`.footer__statistics`);
 
