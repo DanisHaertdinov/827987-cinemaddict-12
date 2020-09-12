@@ -4,11 +4,12 @@ import {render, remove, replace} from '../util/render';
 import {Keys, UserAction, UpdateType} from '../const';
 
 export default class Film {
-  constructor(filmContainer, changeDetailsDisplay, changeData) {
+  constructor(filmContainer, changeDetailsDisplay, changeData, filmsModel) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
     this._changeDetailsDisplay = changeDetailsDisplay;
     this._isDetailsShown = false;
+    this._filmsModel = filmsModel;
 
     this._filmComponent = null;
     this._filmDetailsComponent = null;
@@ -51,13 +52,20 @@ export default class Film {
     }
 
     if (this._isDetailsShown) {
-      const scrollPosition = prevFilmDetailsComponent.getElement().scrollTop;
       replace(this._filmDetailsComponent, prevFilmDetailsComponent);
-      this._filmDetailsComponent.getElement().scrollTop = scrollPosition;
     }
 
     remove(prevFilmComponent);
     remove(prevFilmDetailsComponent);
+  }
+
+  getIsFilmDetailsShown() {
+    return this._isDetailsShown;
+  }
+
+  updateFilmDetails() {
+    this._film = this._filmsModel.getFilmById(this._film.id);
+    this._filmDetailsComponent.updateData(FilmDetailsView.parseDataToFilm(this._film));
   }
 
   _handleFavoriteClick() {
@@ -130,6 +138,8 @@ export default class Film {
 
   destroy() {
     remove(this._filmComponent);
-    remove(this._filmDetailsComponent);
+    if (!this._isDetailsShown) {
+      remove(this._filmDetailsComponent);
+    }
   }
 }
