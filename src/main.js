@@ -3,7 +3,7 @@ import MenuView from "./view/menu";
 import FilmsCountView from "./view/films-count";
 import FilmsSectionPresenter from './presenter/films-section';
 import FilmsModel from "./model/films";
-import {generateFilms} from "./mock/film";
+import {generateFilms, generateComments} from "./mock/film";
 import {generateFilters} from "./mock/filter";
 import {generateUserStats} from "./mock/user";
 import {render} from './util/render';
@@ -15,6 +15,8 @@ const FilmsNumber = {
 };
 
 const films = generateFilms(FilmsNumber.DEFAULT);
+const comments = generateComments(films);
+console.log(comments);
 const filters = generateFilters(films);
 const userStats = generateUserStats(filters);
 
