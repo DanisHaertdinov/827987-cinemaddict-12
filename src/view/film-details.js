@@ -165,6 +165,9 @@ export default class FilmDetails extends Smart {
     this._watchListClickHandler = this._watchListClickHandler.bind(this);
     this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
+    this._elementUpdateHandler = this._elementUpdateHandler.bind(this);
+
+    this.getCommentsContainer = this.getCommentsContainer.bind(this);
 
     this._setInnerHandlers();
   }
@@ -187,11 +190,13 @@ export default class FilmDetails extends Smart {
     this.setWatchListClickHandler(this._callback.watchListClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setCloseBtnClickHandler(this._callback.closeBtnClick);
+    this.setElementUpdateHandler(this._callback.elementUpdated);
   }
 
   updateElement() {
     const scrollPosition = this.getElement().scrollTop;
     super.updateElement();
+    this._elementUpdateHandler();
     this.getElement().scrollTop = scrollPosition;
   }
 
@@ -209,6 +214,10 @@ export default class FilmDetails extends Smart {
     delete data.userComment;
 
     return data;
+  }
+
+  _elementUpdateHandler() {
+    this._callback.elementUpdated();
   }
 
   _setInnerHandlers() {
@@ -248,6 +257,10 @@ export default class FilmDetails extends Smart {
   _watchListClickHandler(evt) {
     evt.preventDefault();
     this._callback.watchListClick();
+  }
+
+  setElementUpdateHandler(callback) {
+    this._callback.elementUpdated = callback;
   }
 
   setFavoriteClickHandler(callback) {

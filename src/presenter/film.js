@@ -22,6 +22,7 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleWatchListClick = this._handleWatchListClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._renderComments = this._renderComments.bind(this);
   }
 
   init(film) {
@@ -40,6 +41,7 @@ export default class Film {
     this._filmDetailsComponent.setWatchListClickHandler(this._handleWatchListClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._filmDetailsComponent.setCloseBtnClickHandler(this._hideFilmDetails);
+    this._filmDetailsComponent.setElementUpdateHandler(this._renderComments);
 
     render(this._filmContainer, this._filmComponent);
     this._renderComments();

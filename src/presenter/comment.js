@@ -9,7 +9,6 @@ export default class Comment {
   init(comment) {
     this._comment = comment;
     this._commentComponent = new CommentView(comment);
-    console.log(this._commentContainer);
     render(this._commentContainer, this._commentComponent);
   }
 }
