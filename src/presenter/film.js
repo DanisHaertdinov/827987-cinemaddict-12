@@ -1,15 +1,17 @@
 import FilmView from '../view/film';
 import FilmDetailsView from '../view/film-details';
-import {render, remove, replace} from '../util/render';
+import CommentPresenter from './comment';
+import {render, remove} from '../util/render';
 import {Keys, UserAction, UpdateType} from '../const';
 
 export default class Film {
-  constructor(filmContainer, changeDetailsDisplay, changeData, filmsModel) {
+  constructor(filmContainer, changeDetailsDisplay, changeData, filmsModel, commentsModel) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
     this._changeDetailsDisplay = changeDetailsDisplay;
     this._isDetailsShown = false;
     this._filmsModel = filmsModel;
+    this._commentsModel = commentsModel;
 
     this._filmComponent = null;
     this._filmDetailsComponent = null;
@@ -25,9 +27,6 @@ export default class Film {
   init(film) {
     this._film = film;
 
-    const prevFilmComponent = this._filmComponent;
-    const prevFilmDetailsComponent = this._filmDetailsComponent;
-
     this._filmComponent = new FilmView(film);
     this._filmDetailsComponent = new FilmDetailsView(film);
 
@@ -42,21 +41,8 @@ export default class Film {
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._filmDetailsComponent.setCloseBtnClickHandler(this._hideFilmDetails);
 
-    if (prevFilmComponent === null || prevFilmDetailsComponent === null) {
-      render(this._filmContainer, this._filmComponent);
-      return;
-    }
-
-    if (this._filmContainer.contains(prevFilmComponent.getElement())) {
-      replace(this._filmComponent, prevFilmComponent);
-    }
-
-    if (this._isDetailsShown) {
-      replace(this._filmDetailsComponent, prevFilmDetailsComponent);
-    }
-
-    remove(prevFilmComponent);
-    remove(prevFilmDetailsComponent);
+    render(this._filmContainer, this._filmComponent);
+    this._renderComments();
   }
 
   getIsFilmDetailsShown() {
@@ -66,6 +52,21 @@ export default class Film {
   updateFilmDetails() {
     this._film = this._filmsModel.getFilmById(this._film.id);
     this._filmDetailsComponent.updateData(FilmDetailsView.parseDataToFilm(this._film));
+    this._renderComments();
+  }
+
+  _getComments() {
+    return this._commentsModel.getComments().filter((comment) => this._film.comments.includes(comment.id));
+  }
+
+  _renderComment(container, comment) {
+    const commentPresenter = new CommentPresenter(container);
+    commentPresenter.init(comment);
+  }
+
+  _renderComments() {
+    const container = this._filmDetailsComponent.getCommentsContainer();
+    this._getComments().forEach((comment) => this._renderComment(container, comment));
   }
 
   _handleFavoriteClick() {

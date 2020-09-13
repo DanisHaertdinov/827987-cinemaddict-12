@@ -24,7 +24,7 @@ const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateIds = (count) => {
   return new Array(count).fill().map(generateId);
-}
+};
 
 const generateComment = (id) => {
   return {

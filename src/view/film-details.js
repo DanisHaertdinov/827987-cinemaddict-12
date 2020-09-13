@@ -1,4 +1,4 @@
-import {prettifyDuration, formatDate, humanizeDate} from "../util/common";
+import {prettifyDuration, formatDate} from "../util/common";
 import Smart from "./smart";
 import {EMOJIS} from "../const";
 
@@ -20,26 +20,6 @@ const createFilmDetailsUserEmojiTemplate = (userEmoji) => {
 const createFilmDetailsGenresTemplate = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span>`;
-  }).join(``);
-};
-
-const createFilmDetailsCommentsTemplate = (comments) => {
-  return comments.map((comment) => {
-    const {text, emoji, author, date} = comment;
-
-    return `<li class="film-details__comment">
-    <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-angry">
-    </span>
-    <div>
-      <p class="film-details__comment-text">${text}</p>
-      <p class="film-details__comment-info">
-        <span class="film-details__comment-author">${author}</span>
-        <span class="film-details__comment-day">${humanizeDate(date)}</span>
-        <button class="film-details__comment-delete">Delete</button>
-      </p>
-    </div>
-  </li>`;
   }).join(``);
 };
 
@@ -150,7 +130,7 @@ const createFilmDetailsTemplate = (film) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
-          ${createFilmDetailsCommentsTemplate(comments)}
+        
         </ul>
 
         <div class="film-details__new-comment">
@@ -187,6 +167,10 @@ export default class FilmDetails extends Smart {
     this._commentInputHandler = this._commentInputHandler.bind(this);
 
     this._setInnerHandlers();
+  }
+
+  getCommentsContainer() {
+    return this.getElement().querySelector(`.film-details__comments-list`);
   }
 
   reset() {

@@ -16,9 +16,10 @@ const FilmsNumber = {
 };
 
 export default class FilmsSection {
-  constructor(sectionContainer, filmsModel) {
+  constructor(sectionContainer, filmsModel, commentsModel) {
     this._sectionContainer = sectionContainer;
     this._filmsModel = filmsModel;
+    this._commentsModel = commentsModel;
 
     this._sortComponent = null;
     this._showMoreButtonComponent = null;
@@ -115,7 +116,7 @@ export default class FilmsSection {
   }
 
   _renderFilm(container, film, presenter = this._filmPresenter) {
-    const filmPresenter = new FilmPresenter(container, this._detailsDisplayChange, this._handleViewAction, this._filmsModel);
+    const filmPresenter = new FilmPresenter(container, this._detailsDisplayChange, this._handleViewAction, this._filmsModel, this._commentsModel);
     presenter[film.id] = filmPresenter;
     filmPresenter.init(film);
   }
