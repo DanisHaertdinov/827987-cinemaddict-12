@@ -1,4 +1,4 @@
-import {getRandomArrayElement, generateRandomText, getRandomInteger, getRandomDate, getRandomLengthArray} from '../util/common';
+import {getRandomArrayElement, generateRandomText, getRandomInteger, getRandomDate, getRandomLengthArray, generateIds, generateId} from '../util/common';
 import {TITLES, POSTERS, GENRES, NAMES, COUNTRIES, EMOJIS} from '../const';
 
 const DESCRIPTION_MAX_LENGTH = 5;
@@ -18,12 +18,6 @@ const Rating = {
 const AgeRating = {
   MIN: 6,
   MAX: 18,
-};
-
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
-
-const generateIds = (count) => {
-  return new Array(count).fill().map(generateId);
 };
 
 const generateComment = (id) => {

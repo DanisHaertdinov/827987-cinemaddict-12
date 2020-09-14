@@ -22,7 +22,8 @@ const RenderPosition = {
 };
 
 const Keys = {
-  ESC: `Escape`
+  ESC: `Escape`,
+  ENTER: `Enter`,
 };
 
 const SortType = {

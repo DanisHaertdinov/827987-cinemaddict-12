@@ -1,6 +1,8 @@
 import {prettifyDuration, formatDate} from "../util/common";
 import Smart from "./smart";
-import {EMOJIS} from "../const";
+import {EMOJIS, Keys} from "../const";
+
+const INVALID_ELEMENT_STYLE = `thick solid red`;
 
 const createFilmDetailsEmojiList = (userEmoji) => {
   return EMOJIS.map((emoji) => {
@@ -166,10 +168,14 @@ export default class FilmDetails extends Smart {
     this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
     this._elementUpdateHandler = this._elementUpdateHandler.bind(this);
+    this._inputKeydownHandler = this._inputKeydownHandler.bind(this);
 
     this.getCommentsContainer = this.getCommentsContainer.bind(this);
 
     this._setInnerHandlers();
+
+    this._commentInput = this.getElement().querySelector(`.film-details__comment-input`);
+    this._newCommentEmojiLabel = this.getElement().querySelector(`.film-details__add-emoji-label`);
   }
 
   getCommentsContainer() {
@@ -191,6 +197,7 @@ export default class FilmDetails extends Smart {
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setCloseBtnClickHandler(this._callback.closeBtnClick);
     this.setElementUpdateHandler(this._callback.elementUpdated);
+    this.setInputKeydownHandler(this._callback.inputKeydown);
   }
 
   updateElement() {
@@ -198,6 +205,9 @@ export default class FilmDetails extends Smart {
     super.updateElement();
     this._elementUpdateHandler();
     this.getElement().scrollTop = scrollPosition;
+
+    this._commentInput = this.getElement().querySelector(`.film-details__comment-input`);
+    this._newCommentEmojiLabel = this.getElement().querySelector(`.film-details__add-emoji-label`);
   }
 
   static parseFilmToData(film) {
@@ -227,6 +237,8 @@ export default class FilmDetails extends Smart {
 
   _commentInputHandler(evt) {
     evt.preventDefault();
+    this._commentInput.style.outline = ``;
+    this._newCommentEmojiLabel.style.outline = ``;
     this.updateData({
       userComment: evt.target.value
     }, true);
@@ -234,9 +246,33 @@ export default class FilmDetails extends Smart {
 
   _emojiChangeHandler(evt) {
     evt.preventDefault();
+    this._commentInput.style.outline = ``;
+    this._newCommentEmojiLabel.style.outline = ``;
     this.updateData({
       userEmoji: evt.target.value
     });
+  }
+
+  _inputKeydownHandler(evt) {
+    if (evt.ctrlKey && evt.key === Keys.ENTER) {
+      evt.preventDefault();
+      console.log(!!this._data.userComment)
+      if (!this._data.userComment) {
+        console.log()
+        this._commentInput.style.outline = INVALID_ELEMENT_STYLE;
+        return;
+      }
+
+      if (!this._data.userEmoji) {
+        this._newCommentEmojiLabel.style.outline = INVALID_ELEMENT_STYLE;
+        return;
+      }
+
+      this._callback.inputKeydown({
+        text: this._data.userComment,
+        emoji: this._data.userEmoji,
+      });
+    }
   }
 
   _closeBtnClickHandler(evt) {
@@ -281,5 +317,10 @@ export default class FilmDetails extends Smart {
   setCloseBtnClickHandler(callback) {
     this._callback.closeBtnClick = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeBtnClickHandler);
+  }
+
+  setInputKeydownHandler(callback) {
+    this._callback.inputKeydown = callback;
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._inputKeydownHandler);
   }
 }

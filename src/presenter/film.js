@@ -2,7 +2,8 @@ import FilmView from '../view/film';
 import FilmDetailsView from '../view/film-details';
 import CommentPresenter from './comment';
 import {render, remove} from '../util/render';
-import {Keys, UserAction, UpdateType} from '../const';
+import {Keys, UserAction, UpdateType, NAMES} from '../const';
+import {generateId, getRandomArrayElement} from '../util/common';
 
 export default class Film {
   constructor(filmContainer, changeDetailsDisplay, changeData, filmsModel, commentsModel) {
@@ -23,10 +24,17 @@ export default class Film {
     this._handleWatchListClick = this._handleWatchListClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._renderComments = this._renderComments.bind(this);
+    this._handleCommentDelete = this._handleCommentDelete.bind(this);
+    this._handleAddComment = this._handleAddComment.bind(this);
   }
 
   init(film) {
     this._film = film;
+
+    if (this._isDetailsShown) {
+      this.updateFilmDetails();
+      return;
+    }
 
     this._filmComponent = new FilmView(film);
     this._filmDetailsComponent = new FilmDetailsView(film);
@@ -42,6 +50,7 @@ export default class Film {
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._filmDetailsComponent.setCloseBtnClickHandler(this._hideFilmDetails);
     this._filmDetailsComponent.setElementUpdateHandler(this._renderComments);
+    this._filmDetailsComponent.setInputKeydownHandler(this._handleAddComment);
 
     render(this._filmContainer, this._filmComponent);
     this._renderComments();
@@ -52,9 +61,7 @@ export default class Film {
   }
 
   updateFilmDetails() {
-    this._film = this._filmsModel.getFilmById(this._film.id);
     this._filmDetailsComponent.updateData(FilmDetailsView.parseDataToFilm(this._film));
-    this._renderComments();
   }
 
   _getComments() {
@@ -62,7 +69,7 @@ export default class Film {
   }
 
   _renderComment(container, comment) {
-    const commentPresenter = new CommentPresenter(container);
+    const commentPresenter = new CommentPresenter(container, this._handleCommentDelete);
     commentPresenter.init(comment);
   }
 
@@ -137,6 +144,41 @@ export default class Film {
     if (this._isDetailsShown) {
       this._hideFilmDetails();
     }
+  }
+
+  _handleCommentDelete(comment) {
+    this._commentsModel.deleteComment(comment);
+    this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
+        Object.assign(
+            {},
+            this._film,
+            {
+              comments: this._film.comments.filter((filmComment) => filmComment !== comment.id)
+            }
+        )
+    );
+  }
+
+  _handleAddComment(comment) {
+    const newComment = Object.assign({}, comment, {
+      id: generateId(),
+      author: getRandomArrayElement(NAMES),
+      date: new Date(),
+    });
+    this._commentsModel.addComment(newComment);
+    this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
+        Object.assign({},
+            this._film,
+            {
+              comments: [...this._film.comments, newComment.id],
+            }
+        )
+    );
+    this._filmDetailsComponent.reset();
   }
 
   destroy() {

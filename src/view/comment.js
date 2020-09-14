@@ -25,9 +25,21 @@ export default class Comment extends AbstractView {
     super();
 
     this._comment = comment;
+
+    this._deleteBtnClickHandler = this._deleteBtnClickHandler.bind(this);
   }
 
   getTemplate() {
     return createCommentTemplate(this._comment);
+  }
+
+  _deleteBtnClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteBtnClick(this._comment);
+  }
+
+  setDeleteBtnClickHandler(callback) {
+    this._callback.deleteBtnClick = callback;
+    this.getElement().querySelector(`.film-details__comment-delete`).addEventListener(`click`, this._deleteBtnClickHandler);
   }
 }

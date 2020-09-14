@@ -60,6 +60,12 @@ const humanizeDate = (date) => {
   return moment(date).fromNow();
 };
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
+const generateIds = (count) => {
+  return new Array(count).fill().map(generateId);
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
@@ -71,5 +77,7 @@ export {
   filterByProperty,
   capitalize,
   formatDate,
-  humanizeDate
+  humanizeDate,
+  generateId,
+  generateIds,
 };

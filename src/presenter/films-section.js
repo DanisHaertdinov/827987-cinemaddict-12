@@ -56,13 +56,13 @@ export default class FilmsSection {
     }
   }
 
-  _handleModelEvent(updateType) {
+  _handleModelEvent(updateType, update) {
     switch (updateType) {
       case UpdateType.MINOR:
         this._clearFilmsSection();
         this._renderFilmsSection({renderExtraFilms: true});
         if (this._filmDetailsPresenter) {
-          this._filmDetailsPresenter.updateFilmDetails();
+          this._filmDetailsPresenter.init(update);
         }
         break;
       case UpdateType.MAJOR:
