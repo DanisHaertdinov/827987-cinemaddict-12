@@ -8,6 +8,7 @@ import SortView from "../view/sort";
 import FilmPresenter from "./film";
 import {render, remove} from "../util/render";
 import {SortType, UserAction, UpdateType} from "../const";
+import {filter} from "../util/filter";
 
 const FilmsNumber = {
   DEFAULT: 22,
@@ -16,10 +17,11 @@ const FilmsNumber = {
 };
 
 export default class FilmsSection {
-  constructor(sectionContainer, filmsModel, commentsModel) {
+  constructor(sectionContainer, filmsModel, commentsModel, filtersModel) {
     this._sectionContainer = sectionContainer;
     this._filmsModel = filmsModel;
     this._commentsModel = commentsModel;
+    this._filtersModel = filtersModel;
 
     this._sortComponent = null;
     this._showMoreButtonComponent = null;
@@ -47,6 +49,7 @@ export default class FilmsSection {
     this._detailsDisplayChange = this._detailsDisplayChange.bind(this);
 
     this._filmsModel.addObserver(this._handleModelEvent);
+    this._filtersModel.addObserver(this._handleModelEvent);
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -66,6 +69,11 @@ export default class FilmsSection {
         }
         break;
       case UpdateType.MAJOR:
+        this._clearFilmsSection({resetSortType: true});
+        this._renderFilmsSection({renderExtraFilms: true});
+        if (this._filmDetailsPresenter) {
+          this._filmDetailsPresenter.updateFilmDetails(update);
+        }
         break;
     }
   }
@@ -75,14 +83,18 @@ export default class FilmsSection {
   }
 
   _getFilms() {
+    const filterType = this._filtersModel.getFilter();
+    const films = this._filmsModel.getFilms();
+    const filteredFilms = filter[filterType](films);
+
     switch (this._currentSortType) {
       case SortType.DATE:
-        return this._filmsModel.getFilms().slice().sort((a, b) => b.date - a.date);
+        return filteredFilms.sort((a, b) => b.date - a.date);
       case SortType.RATING:
-        return this._filmsModel.getFilms().slice().sort((a, b) => b.rating - a.rating);
+        return filteredFilms.sort((a, b) => b.rating - a.rating);
     }
 
-    return this._filmsModel.getFilms();
+    return filteredFilms;
   }
 
   _detailsDisplayChange(filmDetailsPresenter) {

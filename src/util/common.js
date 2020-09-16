@@ -48,10 +48,6 @@ const filterByProperty = (items, criteria) => {
   return items.filter((item) => item[criteria]);
 };
 
-const capitalize = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
 const formatDate = (date, format) => {
   return moment(date).format(format);
 };
@@ -75,7 +71,6 @@ export {
   getRandomLengthArray,
   prettifyDuration,
   filterByProperty,
-  capitalize,
   formatDate,
   humanizeDate,
   generateId,

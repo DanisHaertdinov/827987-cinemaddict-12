@@ -41,6 +41,12 @@ const UpdateType = {
   MAJOR: `MAJOR`
 };
 
+const filmsFilterMap = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};
 
 export {TITLES,
   POSTERS,
@@ -54,5 +60,6 @@ export {TITLES,
   SortType,
   UserAction,
   UpdateType,
+  filmsFilterMap,
 };
 
