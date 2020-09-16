@@ -256,9 +256,7 @@ export default class FilmDetails extends Smart {
   _inputKeydownHandler(evt) {
     if (evt.ctrlKey && evt.key === Keys.ENTER) {
       evt.preventDefault();
-      console.log(!!this._data.userComment)
       if (!this._data.userComment) {
-        console.log()
         this._commentInput.style.outline = INVALID_ELEMENT_STYLE;
         return;
       }

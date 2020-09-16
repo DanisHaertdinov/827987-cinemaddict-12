@@ -62,7 +62,7 @@ export default class FilmsSection {
         this._clearFilmsSection();
         this._renderFilmsSection({renderExtraFilms: true});
         if (this._filmDetailsPresenter) {
-          this._filmDetailsPresenter.init(update);
+          this._filmDetailsPresenter.updateFilmDetails(update);
         }
         break;
       case UpdateType.MAJOR:
@@ -85,14 +85,17 @@ export default class FilmsSection {
     return this._filmsModel.getFilms();
   }
 
-  _detailsDisplayChange() {
+  _detailsDisplayChange(filmDetailsPresenter) {
     [this._filmPresenter, this._topRatedPresenter, this._mostCommentedPresenter].forEach((presenter) => {
       Object.values(presenter).forEach((film) => film.resetView());
     });
 
     if (this._filmDetailsPresenter) {
       this._filmDetailsPresenter.resetView();
+      this._filmDetailsPresenter.destroy();
     }
+
+    this._filmDetailsPresenter = filmDetailsPresenter;
   }
 
   _showMoreButtonClickHandler() {
@@ -205,12 +208,6 @@ export default class FilmsSection {
 
   _removePresenterFilms(presenter) {
     Object.values(presenter).forEach((film) => {
-      if (film.getIsFilmDetailsShown()) {
-        if (this._filmDetailsPresenter) {
-          this._filmDetailsPresenter.destroy();
-        }
-        this._filmDetailsPresenter = film;
-      }
       film.destroy();
     });
   }
@@ -220,7 +217,7 @@ export default class FilmsSection {
       return;
     }
     this._currentSortType = sortType;
-    this._clearFilmsSection();
+    this._clearFilmsSection({resetRenderedFilmsCount: true});
     this._renderFilmsSection();
   }
 

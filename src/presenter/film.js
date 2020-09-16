@@ -31,11 +31,6 @@ export default class Film {
   init(film) {
     this._film = film;
 
-    if (this._isDetailsShown) {
-      this.updateFilmDetails();
-      return;
-    }
-
     this._filmComponent = new FilmView(film);
     this._filmDetailsComponent = new FilmDetailsView(film);
 
@@ -56,11 +51,12 @@ export default class Film {
     this._renderComments();
   }
 
-  getIsFilmDetailsShown() {
-    return this._isDetailsShown;
-  }
+  updateFilmDetails(film) {
+    if (this._film.id !== film.id) {
+      return;
+    }
 
-  updateFilmDetails() {
+    this._film = film;
     this._filmDetailsComponent.updateData(FilmDetailsView.parseDataToFilm(this._film));
   }
 
@@ -134,7 +130,7 @@ export default class Film {
   }
 
   _showFilmDetails() {
-    this._changeDetailsDisplay();
+    this._changeDetailsDisplay(this);
     document.body.appendChild(this._filmDetailsComponent.getElement());
     document.addEventListener(`keydown`, this._filmDetailsEscPressHandler);
     this._isDetailsShown = true;
@@ -167,6 +163,7 @@ export default class Film {
       author: getRandomArrayElement(NAMES),
       date: new Date(),
     });
+    this._filmDetailsComponent.reset();
     this._commentsModel.addComment(newComment);
     this._changeData(
         UserAction.UPDATE_FILM,
@@ -178,7 +175,6 @@ export default class Film {
             }
         )
     );
-    this._filmDetailsComponent.reset();
   }
 
   destroy() {
