@@ -1,4 +1,4 @@
-import UserRateView from "./view/user-rate";
+import UserRatePresenter from "./presenter/user-rate";
 import MenuView from "./view/menu";
 import FilmsCountView from "./view/films-count";
 import FilmsSectionPresenter from './presenter/films-section';
@@ -29,7 +29,8 @@ commentsModel.setComments(comments);
 const siteBodyElement = document.querySelector(`body`);
 const siteHeaderElement = siteBodyElement.querySelector(`.header`);
 
-render(siteHeaderElement, new UserRateView(10).getElement());
+const userRatePresenter = new UserRatePresenter(siteHeaderElement, filmsModel);
+userRatePresenter.init();
 
 const siteMainElement = siteBodyElement.querySelector(`.main`);
 const menuComponent = new MenuView();

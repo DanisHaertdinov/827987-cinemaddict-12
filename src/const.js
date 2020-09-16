@@ -48,6 +48,13 @@ const filmsFilterMap = {
   FAVORITES: `favorites`
 };
 
+const rateMap = {
+  0: ``,
+  1: `Novice`,
+  2: `Fan`,
+  3: `Movie Buff`,
+};
+
 export {TITLES,
   POSTERS,
   LOREUM,
@@ -61,5 +68,6 @@ export {TITLES,
   UserAction,
   UpdateType,
   filmsFilterMap,
+  rateMap,
 };
 

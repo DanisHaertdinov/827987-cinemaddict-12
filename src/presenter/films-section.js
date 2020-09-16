@@ -7,7 +7,7 @@ import MostCommentedFilmsView from "../view/most-commented-films";
 import SortView from "../view/sort";
 import FilmPresenter from "./film";
 import {render, remove} from "../util/render";
-import {SortType, UserAction, UpdateType} from "../const";
+import {SortType, UserAction, UpdateType, RenderPosition} from "../const";
 import {filter} from "../util/filter";
 
 const FilmsNumber = {
@@ -69,8 +69,8 @@ export default class FilmsSection {
         }
         break;
       case UpdateType.MAJOR:
-        this._clearFilmsSection({resetSortType: true});
-        this._renderFilmsSection({renderExtraFilms: true});
+        this._clearFilmsSection({resetRenderedFilmsCount: true, resetSortType: true});
+        this._renderFilmsSection();
         if (this._filmDetailsPresenter) {
           this._filmDetailsPresenter.updateFilmDetails(update);
         }
@@ -86,7 +86,6 @@ export default class FilmsSection {
     const filterType = this._filtersModel.getFilter();
     const films = this._filmsModel.getFilms();
     const filteredFilms = filter[filterType](films);
-
     switch (this._currentSortType) {
       case SortType.DATE:
         return filteredFilms.sort((a, b) => b.date - a.date);
@@ -165,8 +164,6 @@ export default class FilmsSection {
   }
 
   _renderFilmsList() {
-    this._removePresenterFilms(this._filmPresenter);
-    this._filmPresenter = {};
     const filmsCount = this._getFilms().length;
     const films = this._getFilms().slice(0, Math.min(filmsCount, this._renderedFilmsCount));
 
@@ -181,7 +178,7 @@ export default class FilmsSection {
   _renderNoFilms() {
     this._noFilmsComponent = new NoFilmsView();
 
-    render(this._sectionContainer, this._noFilmsComponent);
+    render(this._filmsContainer, this._noFilmsComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderFilmsSection({renderExtraFilms = false} = {}) {
@@ -202,6 +199,8 @@ export default class FilmsSection {
 
   _clearFilmsSection({resetRenderedFilmsCount = false, resetSortType = false} = {}) {
     const filmsCount = this._getFilms().length;
+    this._removePresenterFilms(this._filmPresenter);
+    this._filmPresenter = {};
 
     remove(this._sortComponent);
     remove(this._noFilmsComponent);
