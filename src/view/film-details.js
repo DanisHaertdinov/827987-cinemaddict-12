@@ -1,6 +1,7 @@
 import {prettifyDuration, formatDate} from "../util/common";
 import Smart from "./smart";
 import {EMOJIS, Keys} from "../const";
+import he from "he";
 
 const INVALID_ELEMENT_STYLE = `thick solid red`;
 
@@ -141,7 +142,7 @@ const createFilmDetailsTemplate = (film) => {
         </div>
           
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${userComment}</textarea>
+            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(userComment)}</textarea>
           </label>
 
           <div class="film-details__emoji-list">
