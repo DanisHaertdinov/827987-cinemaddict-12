@@ -32,7 +32,6 @@ export default class Film {
     this._film = film;
 
     this._filmComponent = new FilmView(film);
-    this._filmDetailsComponent = new FilmDetailsView(film);
 
     this._filmComponent.setPosterClickHandler(this._showFilmDetails);
     this._filmComponent.setTitleClickHandler(this._showFilmDetails);
@@ -40,19 +39,28 @@ export default class Film {
     this._filmComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._filmComponent.setWatchListClickHandler(this._handleWatchListClick);
     this._filmComponent.setWatchedClickHandler(this._handleWatchedClick);
+
+    render(this._filmContainer, this._filmComponent);
+  }
+
+  _destroyFilmDetailsComponent() {
+    remove(this._filmDetailsComponent);
+    this._filmDetailsComponent = null;
+  }
+
+  _renderFilmDetailsComponent() {
+    this._filmDetailsComponent = new FilmDetailsView(this._film);
     this._filmDetailsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._filmDetailsComponent.setWatchListClickHandler(this._handleWatchListClick);
     this._filmDetailsComponent.setWatchedClickHandler(this._handleWatchedClick);
     this._filmDetailsComponent.setCloseBtnClickHandler(this._hideFilmDetails);
     this._filmDetailsComponent.setElementUpdateHandler(this._renderComments);
     this._filmDetailsComponent.setInputKeydownHandler(this._handleAddComment);
-
-    render(this._filmContainer, this._filmComponent);
     this._renderComments();
   }
 
   updateFilmDetails(film) {
-    if (this._film.id !== film.id) {
+    if (this._film.id !== film.id || this._filmDetailsComponent === null) {
       return;
     }
 
@@ -123,13 +131,14 @@ export default class Film {
   }
 
   _hideFilmDetails() {
-    this._filmDetailsComponent.reset();
     document.body.removeChild(this._filmDetailsComponent.getElement());
     document.removeEventListener(`keydown`, this._filmDetailsEscPressHandler);
     this._isDetailsShown = false;
+    this._destroyFilmDetailsComponent();
   }
 
   _showFilmDetails() {
+    this._renderFilmDetailsComponent();
     this._changeDetailsDisplay(this);
     document.body.appendChild(this._filmDetailsComponent.getElement());
     document.addEventListener(`keydown`, this._filmDetailsEscPressHandler);
@@ -179,8 +188,5 @@ export default class Film {
 
   destroy() {
     remove(this._filmComponent);
-    if (!this._isDetailsShown) {
-      remove(this._filmDetailsComponent);
-    }
   }
 }

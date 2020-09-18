@@ -101,11 +101,6 @@ export default class FilmsSection {
       Object.values(presenter).forEach((film) => film.resetView());
     });
 
-    if (this._filmDetailsPresenter) {
-      this._filmDetailsPresenter.resetView();
-      this._filmDetailsPresenter.destroy();
-    }
-
     this._filmDetailsPresenter = filmDetailsPresenter;
   }
 
