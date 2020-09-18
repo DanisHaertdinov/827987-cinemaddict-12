@@ -22,13 +22,37 @@ const RenderPosition = {
 };
 
 const Keys = {
-  ESC: `Escape`
+  ESC: `Escape`,
+  ENTER: `Enter`,
 };
 
 const SortType = {
   DEFAULT: `default`,
   DATE: `date`,
   RATING: `rating`,
+};
+
+const UserAction = {
+  UPDATE_FILM: `UPDATE_FILM`,
+};
+
+const UpdateType = {
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+
+const filmsFilterMap = {
+  ALL: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};
+
+const rateMap = {
+  0: ``,
+  1: `Novice`,
+  2: `Fan`,
+  3: `Movie Buff`,
 };
 
 export {TITLES,
@@ -41,4 +65,9 @@ export {TITLES,
   RenderPosition,
   Keys,
   SortType,
+  UserAction,
+  UpdateType,
+  filmsFilterMap,
+  rateMap,
 };
+

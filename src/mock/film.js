@@ -1,4 +1,4 @@
-import {getRandomArrayElement, generateRandomText, getRandomInteger, getRandomDate, getRandomLengthArray} from '../util/common';
+import {getRandomArrayElement, generateRandomText, getRandomInteger, getRandomDate, getRandomLengthArray, generateIds, generateId} from '../util/common';
 import {TITLES, POSTERS, GENRES, NAMES, COUNTRIES, EMOJIS} from '../const';
 
 const DESCRIPTION_MAX_LENGTH = 5;
@@ -20,10 +20,9 @@ const AgeRating = {
   MAX: 18,
 };
 
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
-
-const generateComment = () => {
+const generateComment = (id) => {
   return {
+    id,
     text: generateRandomText(COMMENT_MAX_LENGTH),
     emoji: getRandomArrayElement(EMOJIS),
     author: getRandomArrayElement(NAMES),
@@ -32,8 +31,10 @@ const generateComment = () => {
   };
 };
 
-const generateComments = (count) => {
-  return new Array(count).fill().map(generateComment);
+const generateComments = (films) => {
+  return films.reduce((acc, film) => {
+    return acc.concat(film.comments);
+  }, []).map((id) => generateComment(id));
 };
 
 const generateFilm = () => {
@@ -58,7 +59,7 @@ const generateFilm = () => {
     actors: getRandomLengthArray(NAMES).join(`, `),
     writers: getRandomLengthArray(NAMES).join(`, `),
     country: getRandomArrayElement(COUNTRIES),
-    comments: generateComments(commentsCount),
+    comments: generateIds(commentsCount),
     isInWatchList: Boolean(getRandomInteger()),
     isWatched: Boolean(getRandomInteger()),
     isFavorite: Boolean(getRandomInteger()),
@@ -69,4 +70,4 @@ const generateFilms = (count) => {
   return new Array(count).fill().map(generateFilm);
 };
 
-export {generateFilms};
+export {generateFilms, generateComments};

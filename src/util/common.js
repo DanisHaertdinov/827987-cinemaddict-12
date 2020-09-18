@@ -48,30 +48,18 @@ const filterByProperty = (items, criteria) => {
   return items.filter((item) => item[criteria]);
 };
 
-const capitalize = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1)
-  ];
-};
-
 const formatDate = (date, format) => {
   return moment(date).format(format);
 };
 
 const humanizeDate = (date) => {
   return moment(date).fromNow();
+};
+
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
+const generateIds = (count) => {
+  return new Array(count).fill().map(generateId);
 };
 
 export {
@@ -83,8 +71,8 @@ export {
   getRandomLengthArray,
   prettifyDuration,
   filterByProperty,
-  capitalize,
-  updateItem,
   formatDate,
-  humanizeDate
+  humanizeDate,
+  generateId,
+  generateIds,
 };

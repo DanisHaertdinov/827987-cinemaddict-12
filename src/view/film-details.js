@@ -1,6 +1,9 @@
-import {prettifyDuration, formatDate, humanizeDate} from "../util/common";
+import {prettifyDuration, formatDate} from "../util/common";
 import Smart from "./smart";
-import {EMOJIS} from "../const";
+import {EMOJIS, Keys} from "../const";
+import he from "he";
+
+const INVALID_ELEMENT_STYLE = `thick solid red`;
 
 const createFilmDetailsEmojiList = (userEmoji) => {
   return EMOJIS.map((emoji) => {
@@ -20,26 +23,6 @@ const createFilmDetailsUserEmojiTemplate = (userEmoji) => {
 const createFilmDetailsGenresTemplate = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span>`;
-  }).join(``);
-};
-
-const createFilmDetailsCommentsTemplate = (comments) => {
-  return comments.map((comment) => {
-    const {text, emoji, author, date} = comment;
-
-    return `<li class="film-details__comment">
-    <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-angry">
-    </span>
-    <div>
-      <p class="film-details__comment-text">${text}</p>
-      <p class="film-details__comment-info">
-        <span class="film-details__comment-author">${author}</span>
-        <span class="film-details__comment-day">${humanizeDate(date)}</span>
-        <button class="film-details__comment-delete">Delete</button>
-      </p>
-    </div>
-  </li>`;
   }).join(``);
 };
 
@@ -150,7 +133,7 @@ const createFilmDetailsTemplate = (film) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
         <ul class="film-details__comments-list">
-          ${createFilmDetailsCommentsTemplate(comments)}
+        
         </ul>
 
         <div class="film-details__new-comment">
@@ -159,7 +142,7 @@ const createFilmDetailsTemplate = (film) => {
         </div>
           
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${userComment}</textarea>
+            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(userComment)}</textarea>
           </label>
 
           <div class="film-details__emoji-list">
@@ -185,8 +168,19 @@ export default class FilmDetails extends Smart {
     this._watchListClickHandler = this._watchListClickHandler.bind(this);
     this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
     this._commentInputHandler = this._commentInputHandler.bind(this);
+    this._elementUpdateHandler = this._elementUpdateHandler.bind(this);
+    this._inputKeydownHandler = this._inputKeydownHandler.bind(this);
+
+    this.getCommentsContainer = this.getCommentsContainer.bind(this);
 
     this._setInnerHandlers();
+
+    this._commentInput = this.getElement().querySelector(`.film-details__comment-input`);
+    this._newCommentEmojiLabel = this.getElement().querySelector(`.film-details__add-emoji-label`);
+  }
+
+  getCommentsContainer() {
+    return this.getElement().querySelector(`.film-details__comments-list`);
   }
 
   reset() {
@@ -203,12 +197,18 @@ export default class FilmDetails extends Smart {
     this.setWatchListClickHandler(this._callback.watchListClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setCloseBtnClickHandler(this._callback.closeBtnClick);
+    this.setElementUpdateHandler(this._callback.elementUpdated);
+    this.setInputKeydownHandler(this._callback.inputKeydown);
   }
 
   updateElement() {
     const scrollPosition = this.getElement().scrollTop;
     super.updateElement();
+    this._elementUpdateHandler();
     this.getElement().scrollTop = scrollPosition;
+
+    this._commentInput = this.getElement().querySelector(`.film-details__comment-input`);
+    this._newCommentEmojiLabel = this.getElement().querySelector(`.film-details__add-emoji-label`);
   }
 
   static parseFilmToData(film) {
@@ -227,6 +227,10 @@ export default class FilmDetails extends Smart {
     return data;
   }
 
+  _elementUpdateHandler() {
+    this._callback.elementUpdated();
+  }
+
   _setInnerHandlers() {
     this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`change`, this._emojiChangeHandler);
     this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`input`, this._commentInputHandler);
@@ -234,6 +238,8 @@ export default class FilmDetails extends Smart {
 
   _commentInputHandler(evt) {
     evt.preventDefault();
+    this._commentInput.style.outline = ``;
+    this._newCommentEmojiLabel.style.outline = ``;
     this.updateData({
       userComment: evt.target.value
     }, true);
@@ -241,9 +247,31 @@ export default class FilmDetails extends Smart {
 
   _emojiChangeHandler(evt) {
     evt.preventDefault();
+    this._commentInput.style.outline = ``;
+    this._newCommentEmojiLabel.style.outline = ``;
     this.updateData({
       userEmoji: evt.target.value
     });
+  }
+
+  _inputKeydownHandler(evt) {
+    if (evt.ctrlKey && evt.key === Keys.ENTER) {
+      evt.preventDefault();
+      if (!this._data.userComment) {
+        this._commentInput.style.outline = INVALID_ELEMENT_STYLE;
+        return;
+      }
+
+      if (!this._data.userEmoji) {
+        this._newCommentEmojiLabel.style.outline = INVALID_ELEMENT_STYLE;
+        return;
+      }
+
+      this._callback.inputKeydown({
+        text: this._data.userComment,
+        emoji: this._data.userEmoji,
+      });
+    }
   }
 
   _closeBtnClickHandler(evt) {
@@ -266,6 +294,10 @@ export default class FilmDetails extends Smart {
     this._callback.watchListClick();
   }
 
+  setElementUpdateHandler(callback) {
+    this._callback.elementUpdated = callback;
+  }
+
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, this._favoriteClickHandler);
@@ -284,5 +316,10 @@ export default class FilmDetails extends Smart {
   setCloseBtnClickHandler(callback) {
     this._callback.closeBtnClick = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._closeBtnClickHandler);
+  }
+
+  setInputKeydownHandler(callback) {
+    this._callback.inputKeydown = callback;
+    this.getElement().querySelector(`.film-details__comment-input`).addEventListener(`keydown`, this._inputKeydownHandler);
   }
 }
