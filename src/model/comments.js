@@ -16,8 +16,8 @@ export default class Comments extends Observer {
 
   addComment(update) {
     this._comments = [
+      ...this._comments,
       update,
-      ...this._comments
     ];
 
   }
